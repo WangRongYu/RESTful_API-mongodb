@@ -1,0 +1,121 @@
+http options 方法的作用是什么？
+    检测服务器所支持的请求方法
+    CORS中的预检请求
+allowedMethods的作用
+    响应options方法，告诉它所支持的请求方法
+    相应地返回405（不允许）和501（没实现）
+
+RESTful API 最佳实践----增删改查应该返回什么响应？
+
+控制器：
+什么是控制器？
+    拿到路由分配的任务，并执行
+    在koa中，控制器也是一个中间件
+为什么要用控制器？
+    获取http请求参数
+        Query String，如？q=keyword
+        Router Params，如/user/:id，路由参数往往是必选的
+        Body，如{name: 'lilei'}
+        Header，如Accept、Cookie
+    处理业务逻辑
+    发送http响应
+        发送Status，如200/400等
+        发送Body,如{name:'lilei'}
+        发送Header，如Allow、Content-Type
+编写控制器最佳实践
+    每个资源的控制器放在不同的文件里
+    尽量使用类+类方法的形式编写控制器
+    严谨的错误处理
+
+获取http请求参数
+    学习断点调试
+    获取query
+    获取router Params
+    获取body
+    获取header
+
+发送http响应
+    发送Status
+    发送Body
+    发送Header
+    实现增删改查
+
+什么是错误处理
+   编程语言活着计算机硬件里的一种机制
+   处理软件或信息系统中出现的异常状况
+异常状况有哪些
+    运行是错误，都返回 500
+    逻辑错误，如找不到（404），先决条件失败（412），无法处理的实体（参数格式不对，422）等
+为什么要用错误处理？
+    防止程序挂掉
+    告诉用户错误信息
+    便于开发者调试
+
+什么是NoSQL?
+    对不同于传统的关系型数据库的数据库管理系统的统称
+NoSQL数据库的分类
+    列存储（HBase）
+    文档存储（MongoDB）
+    key-value存储（redis)
+    图存储（FlockDB）
+    对象存储（db4o）
+    XML存储（BaseX）
+
+为什么要用nosql?
+    简单（没有原子性、一致性、隔离型等复杂规范）
+    便于横向拓展
+    适合超大规模数据的存储
+    很灵活地存储复杂结构的数据（Schema Free)
+
+什么是mongoDB？
+    来自于英文单词“humongous”，中文含义为“庞大”
+    面向文档存储的开源数据库
+    有C++编写而成
+为什么要用MongoDB
+    性能好（内存计算）
+    大规模数据存储（可拓展性）
+    可靠安全（本地复制、自动故障转移）
+    方便存储复杂数据结构（Schema Free）
+
+Session的优势
+    相比JWT，最大的优势就在于可以主动清楚session了
+    session保存在服务器端，相对较为安全
+    结合cookie使用，较为灵活，兼容性较好
+Session的劣势
+    cookie+session在跨域场景表现并不好
+    如果是分布式部署，需要做多机制共享session机制
+    基于cookie的机制很容易被CSRF攻击
+    查询session信息可能会有数据库查询操作
+session相关的概念介绍
+    session主要是存放在服务器端，相对安全
+    cookie：主要存放在客户端，并且不是很安全
+    sessionStorage：仅在当前会话下有效，关闭页面或浏览器后会被清楚
+    localstorage：除非被清楚，否则永久保存
+什么是JWT？
+    json web token是一个开放标准（RFC 7519）
+    定义了一种紧凑且独立的方式，可以将各方之间的信息作为一个JSON对象进行安全传输
+    该信息可以被验证和信任，因为是经过数字签名的
+JWT的构成
+    头部（header）
+        typ:token的类型，这里固定为JWT
+        alg:使用的hash算法，例如：HMAC SHA256或者RSA
+    有效载荷（payload）
+        存储需要传递的信息，如用户ID、用户名等
+        还会包含元数据，如过期时间，发布人等
+        与header不同，palyload可以加密
+    签名（signature)
+        对头部和有效载荷部分进行签名
+        保证token在传输过程中没有被篡改或者损坏
+JWT对比Session
+    可拓展性
+        JWT可以无缝接入水平拓展
+    安全性
+        js可以修改JWT，可能会引起XSS攻击，不要放敏感数据在JWT中
+    RESTful API
+        JWT更适合，无状态
+    性能
+        JWT性能不太好，客户端发送请求时，会有大量的用户信息放在JWT中，开销更高（空间换时间）
+        Session需要去进行数据库查询
+    时效性
+        JWT时效性更差，只有等到过期时间才可以销毁
+
