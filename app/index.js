@@ -1,5 +1,5 @@
 const Koa = require('koa');
-const bodyparser = require('koa-bodyparser');
+const koaBody = require('koa-body');
 const error  = require('koa-json-error');
 const parameter = require('koa-parameter');
 const mongoose = require('mongoose');
@@ -13,11 +13,14 @@ const cors = require('koa2-cors');
 mongoose.connect(connectionStr,{ useNewUrlParser: true },()=>console.log('mongodb启动啦！'));
 mongoose.connection.on('error',console.error);
 
-app.use(cors());
+// app.use(cors());
 
 const staticPath = './dist'
+// app.use(static(
+//     path.join( __dirname,'..', staticPath)
+// ))
 app.use(static(
-    path.join( __dirname,'..', staticPath)
+    path.join(__dirname,'publics')
 ))
 
 console.log(path)
@@ -25,7 +28,13 @@ console.log(path)
 app.use(error({
     postFormat: (e, {stack,...rest})=>process.env.NODE_ENV === 'production' ? rest: {stack,...rest}
 }));
-app.use(bodyparser());
+app.use(koaBody({
+    multipart:true,
+    formidable:{
+        uploadDir:path.join(__dirname,'./publics/uploads'),
+        keepExtensions: true
+    }
+}));
 app.use(parameter(app));
 routing(app);
 
